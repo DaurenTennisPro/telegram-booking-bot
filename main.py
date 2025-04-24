@@ -18,7 +18,11 @@ ADMIN_CHAT_ID = "6126002181"
 
 # ==== Подключение Google Таблицы ====
 scope = ["https://spreadsheets.google.com/feeds", "https://www.googleapis.com/auth/drive"]
-creds = ServiceAccountCredentials.from_json_keyfile_name("credentials.json", scope)
+import json
+creds_json = os.getenv("GOOGLE_CREDS_JSON")
+creds_dict = json.loads(creds_json)
+creds = ServiceAccountCredentials.from_json_keyfile_dict(creds_dict, scope)
+
 client = gspread.authorize(creds)
 sheet = client.open_by_key(SPREADSHEET_ID).worksheet(SHEET_NAME)
 master_sheet = client.open_by_key(SPREADSHEET_ID).worksheet(MASTER_SHEET)
